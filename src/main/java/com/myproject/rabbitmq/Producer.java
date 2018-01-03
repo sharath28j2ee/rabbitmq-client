@@ -12,7 +12,7 @@ public class Producer {
 	
 	public void sendMsg(String msg) {
 		int i = 0;
-		while(i < 100000) {
+		while(i < 10) {
 			rabbitTemplate.convertAndSend(RabbitmqClientApplication.queueName, msg);
 			System.out.println("sent message -----> " +msg);
 			i++;

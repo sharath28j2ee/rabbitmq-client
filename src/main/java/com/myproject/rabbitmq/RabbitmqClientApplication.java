@@ -2,8 +2,8 @@ package com.myproject.rabbitmq;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
@@ -22,12 +22,12 @@ public class RabbitmqClientApplication {
 	}
 	
 	@Bean
-	TopicExchange exchange() {
-		return new TopicExchange("sharath-exchange");
+	DirectExchange exchange() {
+		return new DirectExchange("sharath-exchange", false, false);
 	}
 	
 	@Bean
-	Binding binding(Queue q, TopicExchange te) {
+	Binding binding(Queue q, DirectExchange te) {
 		return BindingBuilder.bind(q).to(te).with(queueName);
 	}
 	
@@ -37,13 +37,13 @@ public class RabbitmqClientApplication {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(queueName);
-        container.setMessageListener(listenerAdapter);
+        //container.setMessageListener(listenerAdapter);
         return container;
     }
 	
 	@Bean
     MessageListenerAdapter listenerAdapter(Consumer consumer) {
-        return new MessageListenerAdapter(consumer, "receiveMsg");
+        return new MessageListenerAdapter(consumer, "receiveMsg1");
     }
 
 	public static void main(String[] args) {
